@@ -70,6 +70,25 @@ public class Panel {
 		return this;
 	}
 	
+	public Panel setTeamsAdjustable(boolean teamsAdjustable) {
+		this.teamsAdjustable = teamsAdjustable;
+		return this;
+	}
+	
+	public Panel setOverallAdjustable(boolean adjustable) {
+		this.teamsAdjustable = adjustable;
+		this.adjustable = adjustable;
+		return this;
+	}
+	
+	public boolean isOverallAdjustable() {
+		return adjustable && teamsAdjustable;
+	}
+	
+	public boolean isEitherAdjustable() {
+		return adjustable || teamsAdjustable;
+	}
+	
 	public Scoreboard getScoreboard() {
 		return player.getScoreboard();
 	}
