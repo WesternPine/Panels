@@ -1,4 +1,4 @@
-package net.mc.panels;
+package dev.westernpine.panels;
 
 import java.util.Collection;
 import java.util.HashMap;

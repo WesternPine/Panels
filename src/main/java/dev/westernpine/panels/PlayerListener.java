@@ -1,4 +1,4 @@
-package net.mc.panels;
+package dev.westernpine.panels;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

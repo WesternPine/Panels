@@ -1,4 +1,4 @@
-package net.mc.panels;
+package dev.westernpine.panels;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

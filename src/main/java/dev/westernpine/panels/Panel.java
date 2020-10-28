@@ -1,4 +1,4 @@
-package net.mc.panels;
+package dev.westernpine.panels;
 
 import java.util.LinkedList;
 import java.util.Optional;

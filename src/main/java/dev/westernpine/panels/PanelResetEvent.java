@@ -1,19 +1,24 @@
-package net.mc.panels;
+package dev.westernpine.panels;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.scoreboard.Scoreboard;
 
 import lombok.Getter;
 
-public class PanelTeamsResetEvent extends Event {
+public class PanelResetEvent extends Event {
 	
     private static final HandlerList handlers = new HandlerList();
 	
     @Getter
     private Panel panel;
     
-	public PanelTeamsResetEvent(Panel panel) {
+    @Getter
+    private Scoreboard oldScoreboard;
+    
+	public PanelResetEvent(Panel panel, Scoreboard oldScoreboard) {
 		this.panel = panel;
+		this.oldScoreboard = oldScoreboard;
 	}
 
     @Override
