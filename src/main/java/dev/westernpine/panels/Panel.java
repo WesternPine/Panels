@@ -24,6 +24,9 @@ public class Panel {
 	private boolean adjustable;
 	
 	@Getter
+	private boolean teamsAdjustable;
+	
+	@Getter
 	private Properties properties;
 	
 	private BiConsumer<Team, Player> viewedAsHandler;
@@ -33,6 +36,7 @@ public class Panel {
 	public Panel(Player player) {
 		this.player = player;
 		this.adjustable = true;
+		this.teamsAdjustable = true;
 		this.properties = new Properties();
 	}
 	
@@ -80,11 +84,34 @@ public class Panel {
 		return this;
 	}
 	
-	public Panel callTeamsReset() {
+	private void processOrDispose(Optional<BiConsumer<Team, Player>> optional, Team team, Player player) {
+		if(optional.isPresent()) {
+			optional.get().accept(team, player);
+			team.addEntry(player.getName());
+		} else {
+			team.unregister();
+		}
+	}
+	
+	public Panel resetTeams() {
 		Scoreboard scoreboard = getScoreboard();
 		if(scoreboard != null)
 			scoreboard.getTeams().forEach(team -> team.unregister());
 		Bukkit.getPluginManager().callEvent(new PanelTeamsResetEvent(this));
+		Player player = getPlayer();
+		scoreboard = getScoreboard() != null ? getScoreboard() : Bukkit.getScoreboardManager().getNewScoreboard();
+		for(Panel localPanel : Panels.getPanels()) {
+			if(localPanel.getPlayer().getUniqueId().equals(player.getUniqueId())) {
+				Scoreboard localScoreboard = localPanel.getScoreboard() != null ? localPanel.getScoreboard() : Bukkit.getScoreboardManager().getNewScoreboard();
+		    	Team localTeam = localScoreboard.getTeam(player.getName()) != null ? localScoreboard.getTeam(player.getName()) : localScoreboard.registerNewTeam(player.getName());
+		    	processOrDispose(getViewedAsHandler(), localTeam, player);
+				localPanel.getPlayer().setScoreboard(localScoreboard);
+			} else {
+				Team team = scoreboard.getTeam(localPanel.getPlayer().getName()) != null ? scoreboard.getTeam(localPanel.getPlayer().getName()) : scoreboard.registerNewTeam(localPanel.getPlayer().getName());
+				processOrDispose(getViewOfHandler(), team, localPanel.getPlayer());
+				player.setScoreboard(scoreboard);
+			}
+		}
 		return this;
 	}
 	
@@ -93,7 +120,7 @@ public class Panel {
 		Scoreboard newScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 		
 		player.setScoreboard(newScoreboard);
-		callTeamsReset();
+		resetTeams();
 		Bukkit.getPluginManager().callEvent(new PanelResetEvent(this, oldScoreboard));
 		player.setScoreboard(getScoreboard());
 		return this;

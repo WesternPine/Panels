@@ -37,7 +37,6 @@ public class Panels extends JavaPlugin {
 	public void onEnable() {
 		Bukkit.getOnlinePlayers().forEach(player -> get(player).reset());
 		Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PanelListener(), this);
 	}
 	
 	@Override
