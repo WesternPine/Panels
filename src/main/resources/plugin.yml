@@ -1,0 +1,4 @@
+name: ${project.name}
+main: net.mc.panels.Panels
+version: ${project.version}
+api-version: 1.16
