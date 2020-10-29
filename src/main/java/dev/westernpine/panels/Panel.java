@@ -7,8 +7,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import dev.westernpine.panels.util.Strings;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -39,7 +42,20 @@ public class Panel {
 		this.teamsAdjustable = true;
 		this.properties = new Properties();
 	}
-	
+
+	public TextBuilder text() {
+		return new TextBuilder(this);
+	}
+
+	public Objective objective(DisplaySlot slot, String text, Object... values) {
+		Objective objective = getScoreboard()
+						.registerNewObjective("name", "", Strings.formatAndColor(text, values));
+
+		objective.setDisplaySlot(slot);
+
+		return objective;
+	}
+
 	public Optional<BiConsumer<Team, Player>> getViewedAsHandler() {
 		return Optional.ofNullable(this.viewedAsHandler);
 	}
