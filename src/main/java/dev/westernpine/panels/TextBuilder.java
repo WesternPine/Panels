@@ -1,14 +1,15 @@
 package dev.westernpine.panels;
 
-import dev.westernpine.panels.util.Strings;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.scoreboard.Objective;
-
 import java.util.ArrayList;
 
-public class TextBuilder extends ArrayList<String> {
+import org.bukkit.scoreboard.Objective;
 
-  private final Panel panel;
+import dev.westernpine.panels.util.Strings;
+
+public class TextBuilder extends ArrayList<String> {
+	private static final long serialVersionUID = 1L;
+	
+private final Panel panel;
 
   public TextBuilder(Panel panel) {
     this.panel = panel;
