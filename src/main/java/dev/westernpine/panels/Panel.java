@@ -155,8 +155,14 @@ public class Panel {
 		Scoreboard oldScoreboard = getScoreboard();
 		Scoreboard newScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 		player.setScoreboard(newScoreboard);
-		if(resetTeams)
+		if (resetTeams)
 			resetTeams();
+		else
+			Panels.accept(localPanel -> processOrDispose(getViewOfHandler(),
+					newScoreboard.getTeam(localPanel.getPlayer().getName()) != null
+							? newScoreboard.getTeam(localPanel.getPlayer().getName())
+							: newScoreboard.registerNewTeam(localPanel.getPlayer().getName()),
+					localPanel.getPlayer()));
 		Bukkit.getPluginManager().callEvent(new PanelResetEvent(this, oldScoreboard));
 		return this;
 	}
