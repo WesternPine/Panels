@@ -139,24 +139,25 @@ public class Panel {
 				Scoreboard localScoreboard = localPanel.getScoreboard() != null ? localPanel.getScoreboard() : Bukkit.getScoreboardManager().getNewScoreboard();
 		    	Team localTeam = localScoreboard.getTeam(player.getName()) != null ? localScoreboard.getTeam(player.getName()) : localScoreboard.registerNewTeam(player.getName());
 		    	processOrDispose(getViewedAsHandler(), localTeam, player);
-				localPanel.getPlayer().setScoreboard(localScoreboard);
 			} else {
 				Team team = scoreboard.getTeam(localPanel.getPlayer().getName()) != null ? scoreboard.getTeam(localPanel.getPlayer().getName()) : scoreboard.registerNewTeam(localPanel.getPlayer().getName());
 				processOrDispose(getViewOfHandler(), team, localPanel.getPlayer());
-				player.setScoreboard(scoreboard);
 			}
 		}
 		return this;
 	}
 	
 	public Panel reset() {
+		return reset(true);
+	}
+	
+	public Panel reset(boolean resetTeams) {
 		Scoreboard oldScoreboard = getScoreboard();
 		Scoreboard newScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-		
 		player.setScoreboard(newScoreboard);
-		resetTeams();
+		if(resetTeams)
+			resetTeams();
 		Bukkit.getPluginManager().callEvent(new PanelResetEvent(this, oldScoreboard));
-		player.setScoreboard(getScoreboard());
 		return this;
 	}
 	
