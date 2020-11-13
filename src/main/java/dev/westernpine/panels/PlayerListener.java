@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayeJoin(PlayerJoinEvent event) {
+	public void onPlayerJoin(PlayerJoinEvent event) {
 		Panels.get(event.getPlayer()).reset();
 	}
 
@@ -17,5 +17,4 @@ public class PlayerListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Panels.dispose(event.getPlayer());
 	}
-	
 }

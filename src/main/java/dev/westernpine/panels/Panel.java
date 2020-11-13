@@ -9,10 +9,12 @@ import java.util.function.Function;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import dev.westernpine.panels.util.Strings;
 import lombok.Getter;
 
 public class Panel {
@@ -39,7 +41,20 @@ public class Panel {
 		this.teamsAdjustable = true;
 		this.properties = new Properties();
 	}
-	
+
+	public TextBuilder text() {
+		return new TextBuilder(this);
+	}
+
+	public Objective objective(DisplaySlot slot, String text, Object... values) {
+		Objective objective = getScoreboard()
+						.registerNewObjective("name", "", Strings.formatAndColor(text, values));
+
+		objective.setDisplaySlot(slot);
+
+		return objective;
+	}
+
 	public Optional<BiConsumer<Team, Player>> getViewedAsHandler() {
 		return Optional.ofNullable(this.viewedAsHandler);
 	}
@@ -124,24 +139,31 @@ public class Panel {
 				Scoreboard localScoreboard = localPanel.getScoreboard() != null ? localPanel.getScoreboard() : Bukkit.getScoreboardManager().getNewScoreboard();
 		    	Team localTeam = localScoreboard.getTeam(player.getName()) != null ? localScoreboard.getTeam(player.getName()) : localScoreboard.registerNewTeam(player.getName());
 		    	processOrDispose(getViewedAsHandler(), localTeam, player);
-				localPanel.getPlayer().setScoreboard(localScoreboard);
 			} else {
 				Team team = scoreboard.getTeam(localPanel.getPlayer().getName()) != null ? scoreboard.getTeam(localPanel.getPlayer().getName()) : scoreboard.registerNewTeam(localPanel.getPlayer().getName());
 				processOrDispose(getViewOfHandler(), team, localPanel.getPlayer());
-				player.setScoreboard(scoreboard);
 			}
 		}
 		return this;
 	}
 	
 	public Panel reset() {
+		return reset(true);
+	}
+	
+	public Panel reset(boolean resetTeams) {
 		Scoreboard oldScoreboard = getScoreboard();
 		Scoreboard newScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-		
 		player.setScoreboard(newScoreboard);
-		resetTeams();
+		if (resetTeams)
+			resetTeams();
+		else
+			Panels.accept(localPanel -> processOrDispose(getViewOfHandler(),
+					newScoreboard.getTeam(localPanel.getPlayer().getName()) != null
+							? newScoreboard.getTeam(localPanel.getPlayer().getName())
+							: newScoreboard.registerNewTeam(localPanel.getPlayer().getName()),
+					localPanel.getPlayer()));
 		Bukkit.getPluginManager().callEvent(new PanelResetEvent(this, oldScoreboard));
-		player.setScoreboard(getScoreboard());
 		return this;
 	}
 	
