@@ -1,7 +1,5 @@
 ![Pipeline](https://static.planetminecraft.com/files/resource_media/screenshot/1529/score9162262.jpg)
 
-[**Download Latest Release**](https://github.com/WesternPine/Panels/releases)
-
 # Panels
 
 Panels is an API that manipulates and manages player scoreboards to allow for easier modification of per-player scoreboards, while seeing custom tags.
@@ -26,6 +24,8 @@ Most developers struggle with understanding scoreboards and how they work, and e
 ## Usage
 
 **PLEASE NOTE:** Panels **IS** a plugin, whose purpose was meant to manage ALL scoreboards on a server. This code is **NOT** intended to be [shaded](https://stackoverflow.com/questions/13620281/what-is-the-maven-shade-plugin-used-for-and-why-would-you-want-to-relocate-java) into your project, nor is it intended to be a production-ready product.
+
+To add this project into your project, please use jitpack!
 
 ## Working With Panels
 
